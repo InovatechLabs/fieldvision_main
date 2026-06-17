@@ -19,12 +19,24 @@ services:
   backend:
     build: ./backend
     container_name: atletatrack_backend
+<<<<<<< HEAD
     environment:
       DATABASE_URL: postgresql://atletatrack:atletatrack@postgres:5432/atletatrack?schema=public
       PORT: 3000
       CORS_ORIGIN: http://localhost:5173
     ports:
       - "3000:3000"
+=======
+    # Adicionamos esta linha para o Node.js "ver" o serviço Python no Windows
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    environment:
+      DATABASE_URL: postgresql://atletatrack:atletatrack@postgres:5432/atletatrack?schema=public
+      PORT: 3333
+      CORS_ORIGIN: http://localhost:5173
+    ports:
+      - "3333:3333"
+>>>>>>> 1122f1733359823ff46d03f4d1558eb6640415ce
     depends_on:
       postgres:
         condition: service_healthy
@@ -36,11 +48,19 @@ services:
     build: ./frontend
     container_name: atletatrack_frontend
     environment:
+<<<<<<< HEAD
       VITE_API_URL: http://localhost:3000/api
+=======
+      VITE_API_URL: http://localhost:3333/api
+>>>>>>> 1122f1733359823ff46d03f4d1558eb6640415ce
     ports:
       - "5173:80"
     depends_on:
       - backend
 
 volumes:
+<<<<<<< HEAD
   postgres_data:
+=======
+  postgres_data:
+>>>>>>> 1122f1733359823ff46d03f4d1558eb6640415ce
