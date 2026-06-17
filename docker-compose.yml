@@ -19,6 +19,9 @@ services:
   backend:
     build: ./backend
     container_name: atletatrack_backend
+    # Adicionamos esta linha para o Node.js "ver" o serviço Python no Windows
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     environment:
       DATABASE_URL: postgresql://atletatrack:atletatrack@postgres:5432/atletatrack?schema=public
       PORT: 3333

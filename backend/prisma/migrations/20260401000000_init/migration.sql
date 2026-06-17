@@ -1,10 +1,16 @@
-CREATE TYPE "AthleteProfile" AS ENUM ('EXPLOSIVO','ALTA_RESISTENCIA','BAIXA_INTENSIDADE','ALTA_CARGA_IMPACTO','EQUILIBRADO');
+CREATE TYPE "AthleteProfile" AS ENUM (
+  'explosive',
+  'endurance',
+  'lowIntensity',
+  'highImpactLoad',
+  'balanced'
+);
 CREATE TYPE "AlertSeverity" AS ENUM ('BAIXO','MEDIO','ALTO');
 CREATE TABLE "Athlete" (
   "id" TEXT NOT NULL,
   "position" TEXT,
   "groups" TEXT,
-  "profile" "AthleteProfile" NOT NULL DEFAULT 'EQUILIBRADO',
+  "profile" "AthleteProfile" NOT NULL DEFAULT 'balanced',
   "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
   "updatedAt" TIMESTAMP(3) NOT NULL,
   CONSTRAINT "Athlete_pkey" PRIMARY KEY ("id")

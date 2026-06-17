@@ -871,53 +871,6 @@ Predictive analysis of physical performance in real time.
 
 Transform data into tactical decisions with millimeter precision.
         </motion.p>
-        
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-4"
-        >
-          <motion.button
-            whileHover={{ scale: 1.05, boxShadow: "0 0 40px rgba(0,230,118,0.3)" }}
-            whileTap={{ scale: 0.95 }}
-            className="group relative px-8 py-4 rounded-full bg-gradient-to-r from-emerald-500 to-cyan-500 text-slate-950 font-bold text-lg shadow-xl shadow-emerald-500/20 overflow-hidden"
-          >
-            <span className="relative z-10 flex items-center gap-2">
-              Explore Platform
-              <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </span>
-            <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 to-emerald-400 opacity-0 group-hover:opacity-100 transition-opacity" />
-          </motion.button>
-          
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="px-8 py-4 rounded-full border border-slate-700 text-slate-300 font-semibold text-lg hover:border-emerald-500/50 hover:text-emerald-400 transition-colors backdrop-blur-sm"
-          >
-            Preview
-          </motion.button>
-        </motion.div>
-        
-        {/* Stats */}
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.8 }}
-          className="mt-16 sm:mt-24 grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 max-w-3xl mx-auto"
-        >
-          {[
-            { value: "98%", label: "Prediction Accuracy" },
-            { value: "50ms", label: "Data Latency" },
-            { value: "200+", label: "Metrics Analyzed" },
-            { value: "24/7", label: "Monitoring" }
-          ].map((stat, i) => (
-            <div key={i} className="text-center">
-              <div className="text-2xl sm:text-3xl font-bold text-white mb-1">{stat.value}</div>
-              <div className="text-xs sm:text-sm text-slate-500">{stat.label}</div>
-            </div>
-          ))}
-        </motion.div>
       </motion.div>
       
       {/* Scroll indicator */}

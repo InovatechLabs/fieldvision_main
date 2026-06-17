@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Cria a instância padrão do Axios
 export const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL ?? 'http://localhost:3000/api',
+  baseURL: import.meta.env.VITE_API_URL ?? 'http://localhost:3333/api',
   withCredentials: true,
 });
 
