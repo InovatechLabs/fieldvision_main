@@ -871,7 +871,6 @@ Predictive analysis of physical performance in real time.
 
 Transform data into tactical decisions with millimeter precision.
         </motion.p>
-<<<<<<< HEAD
         
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -919,8 +918,6 @@ Transform data into tactical decisions with millimeter precision.
             </div>
           ))}
         </motion.div>
-=======
->>>>>>> 1122f1733359823ff46d03f4d1558eb6640415ce
       </motion.div>
       
       {/* Scroll indicator */}

@@ -65,7 +65,7 @@ export function AlertsPage() {
                 <span className={`rounded-full border px-3 py-1 text-xs font-semibold uppercase ${severityClass(a.severity)}`}>{a.severity}</span>
               </div>
               <p className="mt-2 text-sm text-slate-300">{a.message}</p>
-              <p className="mt-2 text-xs text-slate-400">Baseline: {n(a.historical)} · Current: {n(a.recent)} · Drop: {n(a.dropPercent)}%</p>
+              <p className="mt-2 text-xs text-slate-400">Baseline: {n(a.historical)} · Current: {n(a.recent)} · Diff: {n(a.dropPercent)}%</p>
             </div>
           ))}
         </div>

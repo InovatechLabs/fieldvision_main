@@ -354,6 +354,17 @@ const CustomTooltip: React.FC<any> = ({ active, payload, label }) => {
   );
 };
 
+interface Alert {
+  id: string;
+  athleteId: string;
+  metric: string;
+  severity: 'high' | 'medium' | 'low';
+  dropPercent: number;
+  historical: number;
+  recent: number;
+  message: string;
+}
+
 // ============================================
 // MAIN DASHBOARD PAGE
 // ============================================
@@ -362,6 +373,17 @@ export function DashboardPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [activeFilter, setActiveFilter] = useState('Current Month');
+  const [alerts, setAlerts] = useState<Alert[]>([]);
+
+  useEffect(() => {
+  api.get('/alerts')
+    .then((response) => {
+      setAlerts(response.data.slice(0, 5));
+    })
+    .catch((error) => {
+      console.error('Erro ao buscar alertas da API:', error);
+    });
+}, []);
   
 
   useEffect(() => {
@@ -550,96 +572,103 @@ export function DashboardPage() {
           {/* ========================================== */}
           {/* CRITICAL FATIGUE ALERT SECTION */}
           {/* ========================================== */}
-          {criticalFatigue.length > 0 && (
-            <motion.div variants={itemVariants}>
-              <GlassCard
-                className="border-red-500/20"
-                glowColor="rgba(255, 61, 113, 0.15)"
-              >
-                <div className="p-5 sm:p-6">
-                  <div className="flex items-center gap-3 mb-5">
-                    <motion.div
-                      variants={pulseVariants}
-                      animate="animate"
-                      className="w-10 h-10 rounded-xl bg-red-500/15 border border-red-500/30 flex items-center justify-center"
-                    >
-                      <Flame className="w-5 h-5 text-red-400" />
-                    </motion.div>
-                    <div>
-                      <h2 className="text-lg font-bold text-white">
-                        Critical Alert: Drop in Income
-                      </h2>
-                      <p className="text-xs text-slate-500">
-                        Players with the highest drop in HIR (High Intensity Running) in the 2nd half
-                      </p>
-                    </div>
-                  </div>
+       {alerts.length > 0 && (
+  <motion.div variants={itemVariants}>
+    <GlassCard
+      className="border-red-500/20"
+      glowColor="rgba(255, 61, 113, 0.15)"
+    >
+      <div className="p-5 sm:p-6">
+        <div className="flex items-center gap-3 mb-5">
+          <motion.div
+            variants={pulseVariants}
+            animate="animate"
+            className="w-10 h-10 rounded-xl bg-red-500/15 border border-red-500/30 flex items-center justify-center"
+          >
+            <Flame className="w-5 h-5 text-red-400" />
+          </motion.div>
+          <div>
+            <h2 className="text-lg font-bold text-white">
+              Performance Alerts
+            </h2>
+            <p className="text-xs text-slate-500">
+              Atheletes with atypical changes in key performance metrics. Immediate review recommended.
+            </p>
+          </div>
+        </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
-                    {criticalFatigue.map((player, idx) => (
-                      <motion.div
-                        key={player.athleteId}
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ delay: idx * 0.1 }}
-                        whileHover={{ scale: 1.03 }}
-                        className={`
-                          relative p-4 rounded-xl border backdrop-blur-sm
-                          ${
-                            player.dropPercent > 25
-                              ? 'bg-red-500/10 border-red-500/30'
-                              : 'bg-orange-500/10 border-orange-500/30'
-                          }
-                        `}
-                      >
-                        <div className="flex items-center justify-between mb-2">
-                          <span className="text-sm font-bold text-white">
-                            {player.athleteId}
-                          </span>
-                          <span
-                            className={`text-xs font-bold px-2 py-0.5 rounded-full ${
-                              player.dropPercent > 25
-                                ? 'bg-red-500/20 text-red-400'
-                                : 'bg-orange-500/20 text-orange-400'
-                            }`}
-                          >
-                            -{player.dropPercent.toFixed(1)}%
-                          </span>
-                        </div>
-                        <div className="space-y-1.5">
-                          <div className="flex justify-between text-xs">
-                            <span className="text-slate-500">1º Tempo HIR</span>
-                            <span className="text-emerald-400 font-medium">
-                              {player.firstHalfHIR.toFixed(1)}
-                            </span>
-                          </div>
-                          <div className="flex justify-between text-xs">
-                            <span className="text-slate-500">2º Tempo HIR</span>
-                            <span className="text-red-400 font-medium">
-                              {player.secondHalfHIR.toFixed(1)}
-                            </span>
-                          </div>
-                          {/* Visual bar showing drop */}
-                          <div className="h-1.5 rounded-full bg-slate-800 overflow-hidden mt-2">
-                            <motion.div
-                              initial={{ width: 0 }}
-                              animate={{ width: `${player.dropPercent}%` }}
-                              transition={{ duration: 1, delay: 0.3 }}
-                              className={`h-full rounded-full ${
-                                player.dropPercent > 25
-                                  ? 'bg-gradient-to-r from-red-500 to-red-400'
-                                  : 'bg-gradient-to-r from-orange-500 to-orange-400'
-                              }`}
-                            />
-                          </div>
-                        </div>
-                      </motion.div>
-                    ))}
-                  </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+          {alerts.map((alert, idx) => (
+            <motion.div
+              key={alert.id || idx} // Usa o ID real do banco
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: idx * 0.1 }}
+              whileHover={{ scale: 1.03 }}
+              className={`
+                relative p-4 rounded-xl border backdrop-blur-sm
+                ${
+                  alert.severity === 'high'
+                    ? 'bg-red-500/10 border-red-500/30'
+                    : 'bg-orange-500/10 border-orange-500/30'
+                }
+              `}
+            >
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm font-bold text-white">
+                  {alert.athleteId}
+                </span>
+                <span
+                  className={`text-xs font-bold px-2 py-0.5 rounded-full ${
+                    alert.severity === 'high'
+                      ? 'bg-red-500/20 text-red-400'
+                      : 'bg-orange-500/20 text-orange-400'
+                  }`}
+                >
+                  {alert.dropPercent.toFixed(1)}%
+                </span>
+              </div>
+              
+              {/* O nome da métrica dinâmica que sofreu a queda */}
+              <div className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-2">
+                {alert.metric}
+              </div>
+
+              <div className="space-y-1.5">
+                <div className="flex justify-between text-xs">
+                  <span className="text-slate-500">Historical Average</span>
+                  <span className="text-emerald-400 font-medium">
+                    {alert.historical.toFixed(1)}
+                  </span>
                 </div>
-              </GlassCard>
+                <div className="flex justify-between text-xs">
+                  <span className="text-slate-500">Last Measurement</span>
+                  <span className="text-red-400 font-medium">
+                    {alert.recent.toFixed(1)}
+                  </span>
+                </div>
+                
+                {/* Visual bar showing drop */}
+                <div className="h-1.5 rounded-full bg-slate-800 overflow-hidden mt-2">
+                  <motion.div
+                    initial={{ width: 0 }}
+                    animate={{ width: `${Math.min(alert.dropPercent, 100)}%` }} // Garante que não passe de 100% visualmente
+                    transition={{ duration: 1, delay: 0.3 }}
+                    className={`h-full rounded-full ${
+                      alert.severity === 'high'
+                        ? 'bg-gradient-to-r from-red-500 to-red-400'
+                        : 'bg-gradient-to-r from-orange-500 to-orange-400'
+                    }`}
+                  />
+                </div>
+              </div>
             </motion.div>
-          )}
+          ))}
+        </div>
+      </div>
+    </GlassCard>
+  </motion.div>
+)}
 
           {/* ========================================== */}
           {/* CENTER PANELS: RADAR + RISK MATRIX */}
